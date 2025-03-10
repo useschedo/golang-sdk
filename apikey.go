@@ -51,6 +51,8 @@ type APIKey struct {
 	Name string `json:"name"`
 	// OrganizationID holds the value of the "organization_id" field.
 	OrganizationID int64 `json:"organization_id"`
+	// Revoked holds the value of the "revoked" field.
+	Revoked bool `json:"revoked"`
 	// UpdatedAt holds the value of the "updated_at" field.
 	UpdatedAt string     `json:"updated_at"`
 	JSON      apiKeyJSON `json:"-"`
@@ -63,6 +65,7 @@ type apiKeyJSON struct {
 	Edges          apijson.Field
 	Name           apijson.Field
 	OrganizationID apijson.Field
+	Revoked        apijson.Field
 	UpdatedAt      apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field

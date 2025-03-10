@@ -4,6 +4,7 @@ package schedo
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/stainless-sdks/Schedo-go/internal/apijson"
@@ -47,23 +48,29 @@ func (r *ApikeyService) List(ctx context.Context, opts ...option.RequestOption) 
 	return
 }
 
+// Revokes an API Key making it inactive
+func (r *ApikeyService) Revoke(ctx context.Context, id int64, opts ...option.RequestOption) (res *[][]APIKey, err error) {
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("apikeys/revoke/%v", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
+	return
+}
+
 type APIKey struct {
-	// Key holds the value of the "key" field.
-	ID string `json:"id"`
+	// ID of the ent.
+	ID int64 `json:"id"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt string `json:"created_at"`
 	// Edges holds the relations/edges for other nodes in the graph. The values are
 	// being populated by the ApiKeyQuery when eager-loading is set.
-	Edges *APIKeyEdges `json:"edges"`
+	Edges APIKeyEdges `json:"edges"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name"`
 	// OrganizationID holds the value of the "organization_id" field.
 	OrganizationID int64 `json:"organization_id"`
 	// Revoked holds the value of the "revoked" field.
-	Revoked bool `json:"revoked"`
-	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt string     `json:"updated_at"`
-	JSON      apiKeyJSON `json:"-"`
+	Revoked bool       `json:"revoked"`
+	JSON    apiKeyJSON `json:"-"`
 }
 
 // apiKeyJSON contains the JSON metadata for the struct [APIKey]
@@ -74,7 +81,6 @@ type apiKeyJSON struct {
 	Name           apijson.Field
 	OrganizationID apijson.Field
 	Revoked        apijson.Field
-	UpdatedAt      apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -87,26 +93,7 @@ func (r apiKeyJSON) RawJSON() string {
 	return r.raw
 }
 
-type APIKeyEdges struct {
-	// Organization holds the value of the organization edge.
-	Organization *Org            `json:"organization"`
-	JSON         apiKeyEdgesJSON `json:"-"`
-}
-
-// apiKeyEdgesJSON contains the JSON metadata for the struct [APIKeyEdges]
-type apiKeyEdgesJSON struct {
-	Organization apijson.Field
-	raw          string
-	ExtraFields  map[string]apijson.Field
-}
-
-func (r *APIKeyEdges) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r apiKeyEdgesJSON) RawJSON() string {
-	return r.raw
-}
+type APIKeyEdges = interface{}
 
 type ApikeyNewParams struct {
 	Name param.Field[string] `json:"name,required"`

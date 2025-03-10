@@ -45,7 +45,7 @@ type Org struct {
 	ClerkID string `json:"clerk_id"`
 	// Edges holds the relations/edges for other nodes in the graph. The values are
 	// being populated by the OrgQuery when eager-loading is set.
-	Edges *OrgEdges `json:"edges"`
+	Edges OrgEdges `json:"edges"`
 	// Organization name
 	Name string  `json:"name"`
 	JSON orgJSON `json:"-"`

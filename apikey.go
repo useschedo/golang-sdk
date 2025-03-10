@@ -39,6 +39,14 @@ func (r *ApikeyService) New(ctx context.Context, body ApikeyNewParams, opts ...o
 	return
 }
 
+// Returns a list of API Keys for the organization
+func (r *ApikeyService) List(ctx context.Context, opts ...option.RequestOption) (res *[][]APIKey, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "apikeys"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return
+}
+
 type APIKey struct {
 	// Key holds the value of the "key" field.
 	ID string `json:"id"`

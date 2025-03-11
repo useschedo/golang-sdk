@@ -64,6 +64,12 @@ type APIKey struct {
 	// Edges holds the relations/edges for other nodes in the graph. The values are
 	// being populated by the ApiKeyQuery when eager-loading is set.
 	Edges APIKeyEdges `json:"edges"`
+	// EnvironmentID holds the value of the "environment_id" field.
+	EnvironmentID int64 `json:"environment_id"`
+	// Internal holds the value of the "internal" field.
+	Internal bool `json:"internal"`
+	// Key holds the value of the "key" field.
+	Key string `json:"key"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name"`
 	// OrganizationID holds the value of the "organization_id" field.
@@ -78,6 +84,9 @@ type apiKeyJSON struct {
 	ID             apijson.Field
 	CreatedAt      apijson.Field
 	Edges          apijson.Field
+	EnvironmentID  apijson.Field
+	Internal       apijson.Field
+	Key            apijson.Field
 	Name           apijson.Field
 	OrganizationID apijson.Field
 	Revoked        apijson.Field

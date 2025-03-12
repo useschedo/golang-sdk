@@ -104,5 +104,5 @@ func (r jobJSON) RawJSON() string {
 }
 
 type JobListParams struct {
-	XAPIEnvironment param.Field[string] `header:"X-API-ENVIRONMENT,required"`
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 }

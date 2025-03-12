@@ -32,19 +32,19 @@ func NewApikeyService(opts ...option.RequestOption) (r *ApikeyService) {
 	return
 }
 
-// List all jobs
+// Generates a new API Key to access Schedo.dev API
 func (r *ApikeyService) New(ctx context.Context, body ApikeyNewParams, opts ...option.RequestOption) (res *APIKey, err error) {
-	if body.XAPIEnvironment.Present {
-		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", body.XAPIEnvironment)))
-	}
 	opts = append(r.Options[:], opts...)
 	path := "apikeys"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
-// Returns a list of API Keys for the organization
-func (r *ApikeyService) List(ctx context.Context, opts ...option.RequestOption) (res *[][]APIKey, err error) {
+// List all jobs
+func (r *ApikeyService) List(ctx context.Context, query ApikeyListParams, opts ...option.RequestOption) (res *Job, err error) {
+	if query.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", query.XAPIEnvironment)))
+	}
 	opts = append(r.Options[:], opts...)
 	path := "apikeys"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
@@ -108,5 +108,13 @@ func (r apiKeyJSON) RawJSON() string {
 type APIKeyEdges = interface{}
 
 type ApikeyNewParams struct {
+	Name param.Field[string] `json:"name,required"`
+}
+
+func (r ApikeyNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ApikeyListParams struct {
 	XAPIEnvironment param.Field[string] `header:"X-API-ENVIRONMENT,required"`
 }

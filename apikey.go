@@ -32,11 +32,14 @@ func NewApikeyService(opts ...option.RequestOption) (r *ApikeyService) {
 	return
 }
 
-// Generates a new API Key to access Schedo.dev API
+// List all jobs
 func (r *ApikeyService) New(ctx context.Context, body ApikeyNewParams, opts ...option.RequestOption) (res *APIKey, err error) {
+	if body.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", body.XAPIEnvironment)))
+	}
 	opts = append(r.Options[:], opts...)
 	path := "apikeys"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
 	return
 }
 
@@ -105,9 +108,5 @@ func (r apiKeyJSON) RawJSON() string {
 type APIKeyEdges = interface{}
 
 type ApikeyNewParams struct {
-	Name param.Field[string] `json:"name,required"`
-}
-
-func (r ApikeyNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+	XAPIEnvironment param.Field[string] `header:"X-API-ENVIRONMENT,required"`
 }

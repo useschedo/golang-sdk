@@ -64,8 +64,6 @@ type Environment struct {
 	// Edges holds the relations/edges for other nodes in the graph. The values are
 	// being populated by the EnvironmentQuery when eager-loading is set.
 	Edges EnvironmentEdges `json:"edges"`
-	// Key holds the value of the "key" field.
-	Key string `json:"key"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name"`
 	// OrganizationID holds the value of the "organization_id" field.
@@ -78,7 +76,6 @@ type environmentJSON struct {
 	ID             apijson.Field
 	CreatedAt      apijson.Field
 	Edges          apijson.Field
-	Key            apijson.Field
 	Name           apijson.Field
 	OrganizationID apijson.Field
 	raw            string

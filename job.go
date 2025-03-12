@@ -3,7 +3,13 @@
 package schedo
 
 import (
+	"context"
+	"fmt"
+	"net/http"
+
 	"github.com/stainless-sdks/Schedo-go/internal/apijson"
+	"github.com/stainless-sdks/Schedo-go/internal/param"
+	"github.com/stainless-sdks/Schedo-go/internal/requestconfig"
 	"github.com/stainless-sdks/Schedo-go/option"
 )
 
@@ -23,6 +29,17 @@ type JobService struct {
 func NewJobService(opts ...option.RequestOption) (r *JobService) {
 	r = &JobService{}
 	r.Options = opts
+	return
+}
+
+// List all jobs
+func (r *JobService) List(ctx context.Context, query JobListParams, opts ...option.RequestOption) (res *Job, err error) {
+	if query.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", query.XAPIEnvironment)))
+	}
+	opts = append(r.Options[:], opts...)
+	path := "jobs"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
@@ -109,4 +126,8 @@ func (r *JobEdges) UnmarshalJSON(data []byte) (err error) {
 
 func (r jobEdgesJSON) RawJSON() string {
 	return r.raw
+}
+
+type JobListParams struct {
+	XAPIEnvironment param.Field[string] `header:"X-API-ENVIRONMENT,required"`
 }

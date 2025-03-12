@@ -51,9 +51,7 @@ func TestApikeyList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Apikeys.List(context.TODO(), schedo.ApikeyListParams{
-		XAPIEnvironment: schedo.F("X-API-ENVIRONMENT"),
-	})
+	_, err := client.Apikeys.List(context.TODO())
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {

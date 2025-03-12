@@ -52,9 +52,6 @@ type Job struct {
 	CreatedAt string `json:"created_at"`
 	// Cron expression for job scheduling
 	CronExpression string `json:"cron_expression"`
-	// Edges holds the relations/edges for other nodes in the graph. The values are
-	// being populated by the JobQuery when eager-loading is set.
-	Edges *JobEdges `json:"edges"`
 	// ID of the user who owns this job
 	EnvironmentID int64 `json:"environment_id"`
 	// Time when the job was last executed
@@ -84,7 +81,6 @@ type jobJSON struct {
 	Command        apijson.Field
 	CreatedAt      apijson.Field
 	CronExpression apijson.Field
-	Edges          apijson.Field
 	EnvironmentID  apijson.Field
 	LastRunAt      apijson.Field
 	MaxRetries     apijson.Field
@@ -104,27 +100,6 @@ func (r *Job) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r jobJSON) RawJSON() string {
-	return r.raw
-}
-
-type JobEdges struct {
-	// Job execution history
-	Executions []interface{} `json:"executions"`
-	JSON       jobEdgesJSON  `json:"-"`
-}
-
-// jobEdgesJSON contains the JSON metadata for the struct [JobEdges]
-type jobEdgesJSON struct {
-	Executions  apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *JobEdges) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r jobEdgesJSON) RawJSON() string {
 	return r.raw
 }
 

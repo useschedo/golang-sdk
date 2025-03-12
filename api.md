@@ -29,7 +29,6 @@ Methods:
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#Job">Job</a>
-- <a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#JobEdges">JobEdges</a>
 
 Methods:
 

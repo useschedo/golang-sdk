@@ -27,7 +27,7 @@ func TestJobList(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Jobs.List(context.TODO(), schedo.JobListParams{
-		XAPIEnvironment: schedo.F("X-API-ENVIRONMENT"),
+		XAPIEnvironment: schedo.F(int64(0)),
 	})
 	if err != nil {
 		var apierr *schedo.Error

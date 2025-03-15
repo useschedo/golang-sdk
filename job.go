@@ -44,7 +44,7 @@ func (r *JobService) List(ctx context.Context, query JobListParams, opts ...opti
 }
 
 // Tries to create a new Job Definition
-func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...option.RequestOption) (res *Job, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "jobs/definition"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)

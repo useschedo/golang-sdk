@@ -32,6 +32,14 @@ func NewEnvironmentService(opts ...option.RequestOption) (r *EnvironmentService)
 	return
 }
 
+// Creates a new org environment
+func (r *EnvironmentService) New(ctx context.Context, body EnvironmentNewParams, opts ...option.RequestOption) (res *Environment, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "org/environments"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Retrieves a list of environments for the current org
 func (r *EnvironmentService) List(ctx context.Context, opts ...option.RequestOption) (res *[]Environment, err error) {
 	opts = append(r.Options[:], opts...)
@@ -45,14 +53,6 @@ func (r *EnvironmentService) Delete(ctx context.Context, id int64, opts ...optio
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("org/environments/%v", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
-}
-
-// Creates a new org environment
-func (r *EnvironmentService) Created(ctx context.Context, body EnvironmentCreatedParams, opts ...option.RequestOption) (res *Environment, err error) {
-	opts = append(r.Options[:], opts...)
-	path := "org/environments"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -112,10 +112,10 @@ func (r environmentEdgesJSON) RawJSON() string {
 	return r.raw
 }
 
-type EnvironmentCreatedParams struct {
+type EnvironmentNewParams struct {
 	Name param.Field[string] `json:"name,required"`
 }
 
-func (r EnvironmentCreatedParams) MarshalJSON() (data []byte, err error) {
+func (r EnvironmentNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }

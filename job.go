@@ -51,6 +51,14 @@ func (r *JobService) Complete(ctx context.Context, executionID int64, opts ...op
 	return
 }
 
+// Tries to create a new Job Definition
+func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "jobs/definition"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Returns list of jobs that must be executed
 func (r *JobService) Executions(ctx context.Context, opts ...option.RequestOption) (res *JobExecution, err error) {
 	opts = append(r.Options[:], opts...)
@@ -166,4 +174,16 @@ func (r jobExecutionJSON) RawJSON() string {
 
 type JobListParams struct {
 	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
+}
+
+type JobDefineParams struct {
+	Name       param.Field[string]                 `json:"name,required"`
+	Schedule   param.Field[string]                 `json:"schedule,required"`
+	MaxRetries param.Field[int64]                  `json:"max_retries"`
+	Metadata   param.Field[map[string]interface{}] `json:"metadata"`
+	Timeout    param.Field[string]                 `json:"timeout"`
+}
+
+func (r JobDefineParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }

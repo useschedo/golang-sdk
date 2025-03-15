@@ -29,10 +29,13 @@ Methods:
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#Job">Job</a>
+- <a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#JobExecution">JobExecution</a>
 
 Methods:
 
 - <code title="get /jobs">client.Jobs.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#JobService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#JobListParams">JobListParams</a>) (<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#Job">Job</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="post /jobs/executions/complete/{executionId}">client.Jobs.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#JobService.Complete">Complete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, executionID <a href="https://pkg.go.dev/builtin#int64">int64</a>) (<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#JobExecution">JobExecution</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /jobs/executions">client.Jobs.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#JobService.Executions">Executions</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>) (<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/Schedo-go#JobExecution">JobExecution</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Org
 

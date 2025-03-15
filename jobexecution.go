@@ -40,7 +40,7 @@ func (r *JobExecutionService) Complete(ctx context.Context, executionID int64, o
 }
 
 // Returns list of jobs that must be executed
-func (r *JobExecutionService) Poll(ctx context.Context, opts ...option.RequestOption) (res *JobExecution, err error) {
+func (r *JobExecutionService) Poll(ctx context.Context, opts ...option.RequestOption) (res *[]JobExecution, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "jobs/executions"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)

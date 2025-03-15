@@ -13,7 +13,7 @@ import (
 	"github.com/stainless-sdks/Schedo-go/option"
 )
 
-func TestJobList(t *testing.T) {
+func TestJobExecutionComplete(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,9 +26,7 @@ func TestJobList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Jobs.List(context.TODO(), schedo.JobListParams{
-		XAPIEnvironment: schedo.F(int64(0)),
-	})
+	_, err := client.JobExecution.Complete(context.TODO(), int64(0))
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {
@@ -38,7 +36,7 @@ func TestJobList(t *testing.T) {
 	}
 }
 
-func TestJobDefineWithOptionalParams(t *testing.T) {
+func TestJobExecutionPoll(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -51,15 +49,7 @@ func TestJobDefineWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Jobs.Define(context.TODO(), schedo.JobDefineParams{
-		Name:       schedo.F("Name of your job"),
-		Schedule:   schedo.F("0 0 * * *"),
-		MaxRetries: schedo.F(int64(0)),
-		Metadata: schedo.F(map[string]interface{}{
-			"foo": "bar",
-		}),
-		Timeout: schedo.F("timeout"),
-	})
+	_, err := client.JobExecution.Poll(context.TODO())
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {

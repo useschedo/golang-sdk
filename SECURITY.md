@@ -20,7 +20,7 @@ or products provided by Schedo please follow the respective company's security r
 
 ### Schedo Terms and Policies
 
-Please contact dev-feedback@Schedo.com for any questions or concerns regarding security of our services.
+Please contact dev-feedback@schedo.dev for any questions or concerns regarding security of our services.
 
 ---
 

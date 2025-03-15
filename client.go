@@ -19,6 +19,7 @@ type Client struct {
 	Apikeys      *ApikeyService
 	Environments *EnvironmentService
 	Jobs         *JobService
+	JobExecution *JobExecutionService
 	Org          *OrgService
 }
 
@@ -44,6 +45,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Apikeys = NewApikeyService(opts...)
 	r.Environments = NewEnvironmentService(opts...)
 	r.Jobs = NewJobService(opts...)
+	r.JobExecution = NewJobExecutionService(opts...)
 	r.Org = NewOrgService(opts...)
 
 	return

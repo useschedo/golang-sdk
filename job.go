@@ -43,27 +43,11 @@ func (r *JobService) List(ctx context.Context, query JobListParams, opts ...opti
 	return
 }
 
-// Marks pending job execution as complete
-func (r *JobService) Complete(ctx context.Context, executionID int64, opts ...option.RequestOption) (res *JobExecution, err error) {
-	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("jobs/executions/complete/%v", executionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return
-}
-
 // Tries to create a new Job Definition
 func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...option.RequestOption) (res *JobExecution, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "jobs/definition"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
-}
-
-// Returns list of jobs that must be executed
-func (r *JobService) Executions(ctx context.Context, opts ...option.RequestOption) (res *JobExecution, err error) {
-	opts = append(r.Options[:], opts...)
-	path := "jobs/executions"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
@@ -127,48 +111,6 @@ func (r *Job) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r jobJSON) RawJSON() string {
-	return r.raw
-}
-
-type JobExecution struct {
-	// ID of the ent.
-	ID int64 `json:"id"`
-	// Time when execution completed
-	EndTime string `json:"end_time"`
-	// Error message if execution failed
-	Error string `json:"error"`
-	// Exit code of the executed command
-	ExitCode int64 `json:"exit_code"`
-	// JobCode holds the value of the "job_code" field.
-	JobCode string `json:"job_code"`
-	// Output of the executed command
-	Output string `json:"output"`
-	// Time when execution started
-	StartTime string `json:"start_time"`
-	// Execution status (running, completed, failed)
-	Status string           `json:"status"`
-	JSON   jobExecutionJSON `json:"-"`
-}
-
-// jobExecutionJSON contains the JSON metadata for the struct [JobExecution]
-type jobExecutionJSON struct {
-	ID          apijson.Field
-	EndTime     apijson.Field
-	Error       apijson.Field
-	ExitCode    apijson.Field
-	JobCode     apijson.Field
-	Output      apijson.Field
-	StartTime   apijson.Field
-	Status      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *JobExecution) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r jobExecutionJSON) RawJSON() string {
 	return r.raw
 }
 

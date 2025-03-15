@@ -47,18 +47,21 @@ type Org struct {
 	// being populated by the OrgQuery when eager-loading is set.
 	Edges OrgEdges `json:"edges"`
 	// Organization name
-	Name string  `json:"name"`
-	JSON orgJSON `json:"-"`
+	Name string `json:"name"`
+	// SingleUserOrg holds the value of the "single_user_org" field.
+	SingleUserOrg bool    `json:"single_user_org"`
+	JSON          orgJSON `json:"-"`
 }
 
 // orgJSON contains the JSON metadata for the struct [Org]
 type orgJSON struct {
-	ID          apijson.Field
-	ClerkID     apijson.Field
-	Edges       apijson.Field
-	Name        apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	ID            apijson.Field
+	ClerkID       apijson.Field
+	Edges         apijson.Field
+	Name          apijson.Field
+	SingleUserOrg apijson.Field
+	raw           string
+	ExtraFields   map[string]apijson.Field
 }
 
 func (r *Org) UnmarshalJSON(data []byte) (err error) {

@@ -6,8 +6,11 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/stainless-sdks/Schedo-go/internal/apijson"
+	"github.com/stainless-sdks/Schedo-go/internal/apiquery"
+	"github.com/stainless-sdks/Schedo-go/internal/param"
 	"github.com/stainless-sdks/Schedo-go/internal/requestconfig"
 	"github.com/stainless-sdks/Schedo-go/option"
 )
@@ -28,6 +31,14 @@ type JobExecutionService struct {
 func NewJobExecutionService(opts ...option.RequestOption) (r *JobExecutionService) {
 	r = &JobExecutionService{}
 	r.Options = opts
+	return
+}
+
+// Returns a list of executions for a job
+func (r *JobExecutionService) List(ctx context.Context, jobID int64, query JobExecutionListParams, opts ...option.RequestOption) (res *[]JobExecution, err error) {
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("jobs/executions/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -87,4 +98,19 @@ func (r *JobExecution) UnmarshalJSON(data []byte) (err error) {
 
 func (r jobExecutionJSON) RawJSON() string {
 	return r.raw
+}
+
+type JobExecutionListParams struct {
+	// 1
+	Cursor param.Field[int64] `query:"cursor"`
+	// 1
+	Limit param.Field[int64] `query:"limit"`
+}
+
+// URLQuery serializes [JobExecutionListParams]'s query parameters as `url.Values`.
+func (r JobExecutionListParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

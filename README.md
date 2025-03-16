@@ -45,7 +45,8 @@ func main() {
 		option.WithAPIKey("My API Key"), // defaults to os.LookupEnv("SCHEDO_API_KEY")
 	)
 	apiKey, err := client.Apikeys.New(context.TODO(), schedo.ApikeyNewParams{
-		Name: schedo.F("First ApiKey"),
+		EnvironmentID: schedo.F(int64(1)),
+		Name:          schedo.F("First ApiKey"),
 	})
 	if err != nil {
 		panic(err.Error())
@@ -169,7 +170,8 @@ To handle errors, we recommend that you use the `errors.As` pattern:
 
 ```go
 _, err := client.Apikeys.New(context.TODO(), schedo.ApikeyNewParams{
-	Name: schedo.F("First ApiKey"),
+	EnvironmentID: schedo.F(int64(1)),
+	Name:          schedo.F("First ApiKey"),
 })
 if err != nil {
 	var apierr *schedo.Error
@@ -198,7 +200,8 @@ defer cancel()
 client.Apikeys.New(
 	ctx,
 	schedo.ApikeyNewParams{
-		Name: schedo.F("First ApiKey"),
+		EnvironmentID: schedo.F(int64(1)),
+		Name:          schedo.F("First ApiKey"),
 	},
 	// This sets the per-retry timeout
 	option.WithRequestTimeout(20*time.Second),
@@ -236,7 +239,8 @@ client := schedo.NewClient(
 client.Apikeys.New(
 	context.TODO(),
 	schedo.ApikeyNewParams{
-		Name: schedo.F("First ApiKey"),
+		EnvironmentID: schedo.F(int64(1)),
+		Name:          schedo.F("First ApiKey"),
 	},
 	option.WithMaxRetries(5),
 )
@@ -253,7 +257,8 @@ var response *http.Response
 apiKey, err := client.Apikeys.New(
 	context.TODO(),
 	schedo.ApikeyNewParams{
-		Name: schedo.F("First ApiKey"),
+		EnvironmentID: schedo.F(int64(1)),
+		Name:          schedo.F("First ApiKey"),
 	},
 	option.WithResponseInto(&response),
 )

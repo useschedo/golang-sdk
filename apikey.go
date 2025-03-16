@@ -105,7 +105,8 @@ func (r apiKeyJSON) RawJSON() string {
 type APIKeyEdges = interface{}
 
 type ApikeyNewParams struct {
-	Name param.Field[string] `json:"name,required"`
+	EnvironmentID param.Field[int64]  `json:"environment_id,required"`
+	Name          param.Field[string] `json:"name,required"`
 }
 
 func (r ApikeyNewParams) MarshalJSON() (data []byte, err error) {

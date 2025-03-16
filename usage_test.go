@@ -25,7 +25,8 @@ func TestUsage(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	apiKey, err := client.Apikeys.New(context.TODO(), schedo.ApikeyNewParams{
-		Name: schedo.F("First ApiKey"),
+		EnvironmentID: schedo.F(int64(1)),
+		Name:          schedo.F("First ApiKey"),
 	})
 	if err != nil {
 		t.Error(err)

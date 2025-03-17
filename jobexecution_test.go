@@ -30,8 +30,9 @@ func TestJobExecutionListWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		int64(0),
 		schedo.JobExecutionListParams{
-			Cursor: schedo.F(int64(0)),
-			Limit:  schedo.F(int64(0)),
+			XAPIEnvironment: schedo.F(int64(0)),
+			Cursor:          schedo.F(int64(0)),
+			Limit:           schedo.F(int64(0)),
 		},
 	)
 	if err != nil {

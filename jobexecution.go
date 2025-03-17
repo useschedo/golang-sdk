@@ -35,10 +35,13 @@ func NewJobExecutionService(opts ...option.RequestOption) (r *JobExecutionServic
 }
 
 // Returns a list of executions for a job
-func (r *JobExecutionService) List(ctx context.Context, jobID int64, query JobExecutionListParams, opts ...option.RequestOption) (res *[]JobExecution, err error) {
+func (r *JobExecutionService) List(ctx context.Context, jobID int64, params JobExecutionListParams, opts ...option.RequestOption) (res *[]JobExecution, err error) {
+	if params.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", params.XAPIEnvironment)))
+	}
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("jobs/executions/%v", jobID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, params, &res, opts...)
 	return
 }
 
@@ -101,6 +104,7 @@ func (r jobExecutionJSON) RawJSON() string {
 }
 
 type JobExecutionListParams struct {
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 	// 1
 	Cursor param.Field[int64] `query:"cursor"`
 	// 1

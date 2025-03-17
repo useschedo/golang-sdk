@@ -43,6 +43,16 @@ func (r *JobService) List(ctx context.Context, query JobListParams, opts ...opti
 	return
 }
 
+// After you delete a job, you can't recover it, but if you have services still
+// running with that job reference, they will re-create and re-schedule a new job
+// automatically.
+func (r *JobService) Delete(ctx context.Context, jobID int64, opts ...option.RequestOption) (res *string, err error) {
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("jobs/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
+	return
+}
+
 // Tries to create a new Job Definition
 func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...option.RequestOption) (res *Job, err error) {
 	opts = append(r.Options[:], opts...)

@@ -46,10 +46,10 @@ func (r *JobExecutionService) List(ctx context.Context, jobID int64, params JobE
 }
 
 // Marks pending job execution as complete
-func (r *JobExecutionService) Complete(ctx context.Context, executionID int64, opts ...option.RequestOption) (res *JobExecution, err error) {
+func (r *JobExecutionService) Complete(ctx context.Context, executionID int64, body JobExecutionCompleteParams, opts ...option.RequestOption) (res *JobExecution, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("jobs/executions/complete/%v", executionID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -64,6 +64,8 @@ func (r *JobExecutionService) Poll(ctx context.Context, opts ...option.RequestOp
 type JobExecution struct {
 	// ID of the ent.
 	ID int64 `json:"id"`
+	// Duration holds the value of the "duration" field.
+	Duration int64 `json:"duration"`
 	// Time when execution completed
 	EndTime string `json:"end_time"`
 	// Error message if execution failed
@@ -74,6 +76,8 @@ type JobExecution struct {
 	JobCode string `json:"job_code"`
 	// Output of the executed command
 	Output string `json:"output"`
+	// Time when execution was picked up by a worker
+	PickUpTime string `json:"pick_up_time"`
 	// Time when execution started
 	StartTime string `json:"start_time"`
 	// Execution status (running, completed, failed)
@@ -84,11 +88,13 @@ type JobExecution struct {
 // jobExecutionJSON contains the JSON metadata for the struct [JobExecution]
 type jobExecutionJSON struct {
 	ID          apijson.Field
+	Duration    apijson.Field
 	EndTime     apijson.Field
 	Error       apijson.Field
 	ExitCode    apijson.Field
 	JobCode     apijson.Field
 	Output      apijson.Field
+	PickUpTime  apijson.Field
 	StartTime   apijson.Field
 	Status      apijson.Field
 	raw         string
@@ -117,4 +123,14 @@ func (r JobExecutionListParams) URLQuery() (v url.Values) {
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
+}
+
+type JobExecutionCompleteParams struct {
+	Success param.Field[bool]   `json:"success,required"`
+	Error   param.Field[string] `json:"error"`
+	Output  param.Field[string] `json:"output"`
+}
+
+func (r JobExecutionCompleteParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }

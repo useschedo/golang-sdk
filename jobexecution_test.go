@@ -44,7 +44,7 @@ func TestJobExecutionListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestJobExecutionComplete(t *testing.T) {
+func TestJobExecutionCompleteWithOptionalParams(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -57,7 +57,15 @@ func TestJobExecutionComplete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.JobExecution.Complete(context.TODO(), int64(0))
+	_, err := client.JobExecution.Complete(
+		context.TODO(),
+		int64(0),
+		schedo.JobExecutionCompleteParams{
+			Success: schedo.F(true),
+			Error:   schedo.F("Error message"),
+			Output:  schedo.F("Output message"),
+		},
+	)
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {

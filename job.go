@@ -32,6 +32,17 @@ func NewJobService(opts ...option.RequestOption) (r *JobService) {
 	return
 }
 
+// Retrieve a job by its ID
+func (r *JobService) Get(ctx context.Context, jobID int64, query JobGetParams, opts ...option.RequestOption) (res *Output, err error) {
+	if query.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", query.XAPIEnvironment)))
+	}
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("jobs/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return
+}
+
 // List all jobs
 func (r *JobService) List(ctx context.Context, query JobListParams, opts ...option.RequestOption) (res *Job, err error) {
 	if query.XAPIEnvironment.Present {
@@ -122,6 +133,32 @@ func (r *Job) UnmarshalJSON(data []byte) (err error) {
 
 func (r jobJSON) RawJSON() string {
 	return r.raw
+}
+
+type Output struct {
+	Job     Job          `json:"job"`
+	LastRun JobExecution `json:"last_run"`
+	JSON    outputJSON   `json:"-"`
+}
+
+// outputJSON contains the JSON metadata for the struct [Output]
+type outputJSON struct {
+	Job         apijson.Field
+	LastRun     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *Output) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r outputJSON) RawJSON() string {
+	return r.raw
+}
+
+type JobGetParams struct {
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 }
 
 type JobListParams struct {

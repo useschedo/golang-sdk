@@ -18,11 +18,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/useschedo/golang-sdk/internal"
-	"github.com/useschedo/golang-sdk/internal/apierror"
-	"github.com/useschedo/golang-sdk/internal/apiform"
-	"github.com/useschedo/golang-sdk/internal/apiquery"
-	"github.com/useschedo/golang-sdk/internal/param"
+	"github.com/stainless-sdks/Schedo-go/internal"
+	"github.com/stainless-sdks/Schedo-go/internal/apierror"
+	"github.com/stainless-sdks/Schedo-go/internal/apiform"
+	"github.com/stainless-sdks/Schedo-go/internal/apiquery"
+	"github.com/stainless-sdks/Schedo-go/internal/param"
 )
 
 func getDefaultHeaders() map[string]string {

@@ -3,7 +3,7 @@
 package schedo
 
 import (
-	"github.com/useschedo/golang-sdk/internal/apierror"
+	"github.com/stainless-sdks/Schedo-go/internal/apierror"
 )
 
 type Error = apierror.Error

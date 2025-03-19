@@ -13,7 +13,7 @@ import (
 
 	"github.com/tidwall/sjson"
 
-	"github.com/useschedo/golang-sdk/internal/param"
+	"github.com/stainless-sdks/Schedo-go/internal/param"
 )
 
 var encoders sync.Map // map[encoderEntry]encoderFunc

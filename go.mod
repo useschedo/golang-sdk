@@ -1,4 +1,4 @@
-module github.com/useschedo/golang-sdk
+module github.com/stainless-sdks/Schedo-go
 
 go 1.21
 

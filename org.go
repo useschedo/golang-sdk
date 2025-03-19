@@ -6,9 +6,9 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/stainless-sdks/Schedo-go/internal/apijson"
-	"github.com/stainless-sdks/Schedo-go/internal/requestconfig"
-	"github.com/stainless-sdks/Schedo-go/option"
+	"github.com/useschedo/golang-sdk/internal/apijson"
+	"github.com/useschedo/golang-sdk/internal/requestconfig"
+	"github.com/useschedo/golang-sdk/option"
 )
 
 // OrgService contains methods and other services that help with interacting with

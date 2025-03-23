@@ -87,6 +87,18 @@ func (r *JobService) Pause(ctx context.Context, jobID string, body JobPauseParam
 	return
 }
 
+// Resumes job execution
+func (r *JobService) Resume(ctx context.Context, jobID string, body JobResumeParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+	opts = append(r.Options[:], opts...)
+	if jobID == "" {
+		err = errors.New("missing required jobId parameter")
+		return
+	}
+	path := fmt.Sprintf("jobs/resume/%s", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	return
+}
+
 // Immediately triggers a job
 func (r *JobService) Trigger(ctx context.Context, jobID string, body JobTriggerParams, opts ...option.RequestOption) (res *JobExecution, err error) {
 	opts = append(r.Options[:], opts...)
@@ -214,6 +226,19 @@ type JobPauseParams struct {
 
 // URLQuery serializes [JobPauseParams]'s query parameters as `url.Values`.
 func (r JobPauseParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type JobResumeParams struct {
+	// Job ID
+	JobID param.Field[int64] `query:"jobId,required"`
+}
+
+// URLQuery serializes [JobResumeParams]'s query parameters as `url.Values`.
+func (r JobResumeParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatComma,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,

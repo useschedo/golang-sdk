@@ -150,6 +150,35 @@ func TestJobPause(t *testing.T) {
 	}
 }
 
+func TestJobResume(t *testing.T) {
+	t.Skip("skipped: tests are disabled for the time being")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := schedo.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+	)
+	_, err := client.Jobs.Resume(
+		context.TODO(),
+		"jobId",
+		schedo.JobResumeParams{
+			JobID: schedo.F(int64(0)),
+		},
+	)
+	if err != nil {
+		var apierr *schedo.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
 func TestJobTrigger(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"

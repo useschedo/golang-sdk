@@ -61,15 +61,6 @@ func (r *JobExecutionService) Poll(ctx context.Context, opts ...option.RequestOp
 	return
 }
 
-// Streams job executions over websockets
-func (r *JobExecutionService) Updates(ctx context.Context, query JobExecutionUpdatesParams, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
-	path := "jobs/executions/stream"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, nil, opts...)
-	return
-}
-
 type JobExecution struct {
 	// ID of the ent.
 	ID int64 `json:"id"`
@@ -142,18 +133,4 @@ type JobExecutionCompleteParams struct {
 
 func (r JobExecutionCompleteParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-type JobExecutionUpdatesParams struct {
-	// List of Job Codes to stream
-	Jobs param.Field[[]string] `query:"jobs"`
-}
-
-// URLQuery serializes [JobExecutionUpdatesParams]'s query parameters as
-// `url.Values`.
-func (r JobExecutionUpdatesParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
 }

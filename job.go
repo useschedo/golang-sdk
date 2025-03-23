@@ -4,10 +4,13 @@ package schedo
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/stainless-sdks/Schedo-go/internal/apijson"
+	"github.com/stainless-sdks/Schedo-go/internal/apiquery"
 	"github.com/stainless-sdks/Schedo-go/internal/param"
 	"github.com/stainless-sdks/Schedo-go/internal/requestconfig"
 	"github.com/stainless-sdks/Schedo-go/option"
@@ -72,6 +75,30 @@ func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...o
 	return
 }
 
+// Temporary stops a job from running
+func (r *JobService) Pause(ctx context.Context, jobID string, body JobPauseParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+	opts = append(r.Options[:], opts...)
+	if jobID == "" {
+		err = errors.New("missing required jobId parameter")
+		return
+	}
+	path := fmt.Sprintf("jobs/pause/%s", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	return
+}
+
+// Immediately triggers a job
+func (r *JobService) Trigger(ctx context.Context, jobID string, body JobTriggerParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+	opts = append(r.Options[:], opts...)
+	if jobID == "" {
+		err = errors.New("missing required jobId parameter")
+		return
+	}
+	path := fmt.Sprintf("jobs/trigger/%s", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 type Job struct {
 	// ID of the ent.
 	ID int64 `json:"id"`
@@ -95,6 +122,8 @@ type Job struct {
 	Name string `json:"name"`
 	// Scheduled time for next execution
 	NextRunAt string `json:"next_run_at"`
+	// Paused holds the value of the "paused" field.
+	Paused bool `json:"paused"`
 	// Number of retry attempts
 	RetryCount int64 `json:"retry_count"`
 	// Current job status (pending, running, completed, failed)
@@ -119,6 +148,7 @@ type jobJSON struct {
 	Metadata       apijson.Field
 	Name           apijson.Field
 	NextRunAt      apijson.Field
+	Paused         apijson.Field
 	RetryCount     apijson.Field
 	Status         apijson.Field
 	Timeout        apijson.Field
@@ -175,4 +205,30 @@ type JobDefineParams struct {
 
 func (r JobDefineParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type JobPauseParams struct {
+	// Job ID
+	JobID param.Field[int64] `query:"jobId,required"`
+}
+
+// URLQuery serializes [JobPauseParams]'s query parameters as `url.Values`.
+func (r JobPauseParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type JobTriggerParams struct {
+	// Job ID
+	JobID param.Field[int64] `query:"jobId,required"`
+}
+
+// URLQuery serializes [JobTriggerParams]'s query parameters as `url.Values`.
+func (r JobTriggerParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatComma,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

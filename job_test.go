@@ -134,7 +134,13 @@ func TestJobPause(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Jobs.Pause(context.TODO(), int64(0))
+	_, err := client.Jobs.Pause(
+		context.TODO(),
+		"jobId",
+		schedo.JobPauseParams{
+			JobID: schedo.F(int64(0)),
+		},
+	)
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {
@@ -157,7 +163,13 @@ func TestJobResume(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Jobs.Resume(context.TODO(), int64(0))
+	_, err := client.Jobs.Resume(
+		context.TODO(),
+		"jobId",
+		schedo.JobResumeParams{
+			JobID: schedo.F(int64(0)),
+		},
+	)
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {
@@ -180,7 +192,13 @@ func TestJobTrigger(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Jobs.Trigger(context.TODO(), int64(0))
+	_, err := client.Jobs.Trigger(
+		context.TODO(),
+		"jobId",
+		schedo.JobTriggerParams{
+			JobID: schedo.F(int64(0)),
+		},
+	)
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {

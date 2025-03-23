@@ -4,13 +4,10 @@ package schedo
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
-	"net/url"
 
 	"github.com/stainless-sdks/Schedo-go/internal/apijson"
-	"github.com/stainless-sdks/Schedo-go/internal/apiquery"
 	"github.com/stainless-sdks/Schedo-go/internal/param"
 	"github.com/stainless-sdks/Schedo-go/internal/requestconfig"
 	"github.com/stainless-sdks/Schedo-go/option"
@@ -76,38 +73,26 @@ func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...o
 }
 
 // Temporary stops a job from running
-func (r *JobService) Pause(ctx context.Context, jobID string, body JobPauseParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+func (r *JobService) Pause(ctx context.Context, jobID int64, opts ...option.RequestOption) (res *JobExecution, err error) {
 	opts = append(r.Options[:], opts...)
-	if jobID == "" {
-		err = errors.New("missing required jobId parameter")
-		return
-	}
-	path := fmt.Sprintf("jobs/pause/%s", jobID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	path := fmt.Sprintf("jobs/pause/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, nil, &res, opts...)
 	return
 }
 
 // Resumes job execution
-func (r *JobService) Resume(ctx context.Context, jobID string, body JobResumeParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+func (r *JobService) Resume(ctx context.Context, jobID int64, opts ...option.RequestOption) (res *JobExecution, err error) {
 	opts = append(r.Options[:], opts...)
-	if jobID == "" {
-		err = errors.New("missing required jobId parameter")
-		return
-	}
-	path := fmt.Sprintf("jobs/resume/%s", jobID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	path := fmt.Sprintf("jobs/resume/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, nil, &res, opts...)
 	return
 }
 
 // Immediately triggers a job
-func (r *JobService) Trigger(ctx context.Context, jobID string, body JobTriggerParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+func (r *JobService) Trigger(ctx context.Context, jobID int64, opts ...option.RequestOption) (res *JobExecution, err error) {
 	opts = append(r.Options[:], opts...)
-	if jobID == "" {
-		err = errors.New("missing required jobId parameter")
-		return
-	}
-	path := fmt.Sprintf("jobs/trigger/%s", jobID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	path := fmt.Sprintf("jobs/trigger/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
 	return
 }
 
@@ -217,43 +202,4 @@ type JobDefineParams struct {
 
 func (r JobDefineParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-type JobPauseParams struct {
-	// Job ID
-	JobID param.Field[int64] `query:"jobId,required"`
-}
-
-// URLQuery serializes [JobPauseParams]'s query parameters as `url.Values`.
-func (r JobPauseParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-type JobResumeParams struct {
-	// Job ID
-	JobID param.Field[int64] `query:"jobId,required"`
-}
-
-// URLQuery serializes [JobResumeParams]'s query parameters as `url.Values`.
-func (r JobResumeParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-type JobTriggerParams struct {
-	// Job ID
-	JobID param.Field[int64] `query:"jobId,required"`
-}
-
-// URLQuery serializes [JobTriggerParams]'s query parameters as `url.Values`.
-func (r JobTriggerParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
 }

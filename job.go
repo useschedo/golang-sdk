@@ -4,13 +4,10 @@ package schedo
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"net/http"
-	"net/url"
 
 	"github.com/stainless-sdks/Schedo-go/internal/apijson"
-	"github.com/stainless-sdks/Schedo-go/internal/apiquery"
 	"github.com/stainless-sdks/Schedo-go/internal/param"
 	"github.com/stainless-sdks/Schedo-go/internal/requestconfig"
 	"github.com/stainless-sdks/Schedo-go/option"
@@ -60,7 +57,10 @@ func (r *JobService) List(ctx context.Context, query JobListParams, opts ...opti
 // After you delete a job, you can't recover it, but if you have services still
 // running with that job reference, they will re-create and re-schedule a new job
 // automatically.
-func (r *JobService) Delete(ctx context.Context, jobID int64, opts ...option.RequestOption) (res *string, err error) {
+func (r *JobService) Delete(ctx context.Context, jobID int64, body JobDeleteParams, opts ...option.RequestOption) (res *string, err error) {
+	if body.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", body.XAPIEnvironment)))
+	}
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("jobs/%v", jobID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
@@ -76,44 +76,43 @@ func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...o
 }
 
 // Temporary stops a job from running
-func (r *JobService) Pause(ctx context.Context, jobID string, body JobPauseParams, opts ...option.RequestOption) (res *JobExecution, err error) {
-	opts = append(r.Options[:], opts...)
-	if jobID == "" {
-		err = errors.New("missing required jobId parameter")
-		return
+func (r *JobService) Pause(ctx context.Context, jobID int64, body JobPauseParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+	if body.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", body.XAPIEnvironment)))
 	}
-	path := fmt.Sprintf("jobs/pause/%s", jobID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("jobs/pause/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, nil, &res, opts...)
 	return
 }
 
 // Resumes job execution
-func (r *JobService) Resume(ctx context.Context, jobID string, body JobResumeParams, opts ...option.RequestOption) (res *JobExecution, err error) {
-	opts = append(r.Options[:], opts...)
-	if jobID == "" {
-		err = errors.New("missing required jobId parameter")
-		return
+func (r *JobService) Resume(ctx context.Context, jobID int64, body JobResumeParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+	if body.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", body.XAPIEnvironment)))
 	}
-	path := fmt.Sprintf("jobs/resume/%s", jobID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("jobs/resume/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, nil, &res, opts...)
 	return
 }
 
 // Immediately triggers a job
-func (r *JobService) Trigger(ctx context.Context, jobID string, body JobTriggerParams, opts ...option.RequestOption) (res *JobExecution, err error) {
-	opts = append(r.Options[:], opts...)
-	if jobID == "" {
-		err = errors.New("missing required jobId parameter")
-		return
+func (r *JobService) Trigger(ctx context.Context, jobID int64, body JobTriggerParams, opts ...option.RequestOption) (res *JobExecution, err error) {
+	if body.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", body.XAPIEnvironment)))
 	}
-	path := fmt.Sprintf("jobs/trigger/%s", jobID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("jobs/trigger/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
 	return
 }
 
 type Job struct {
 	// ID of the ent.
 	ID int64 `json:"id"`
+	// Blocking holds the value of the "blocking" field.
+	Blocking bool `json:"blocking"`
 	// Command to execute
 	Command string `json:"command"`
 	// Time when the job was created
@@ -150,6 +149,7 @@ type Job struct {
 // jobJSON contains the JSON metadata for the struct [Job]
 type jobJSON struct {
 	ID             apijson.Field
+	Blocking       apijson.Field
 	Command        apijson.Field
 	CreatedAt      apijson.Field
 	CronExpression apijson.Field
@@ -207,9 +207,14 @@ type JobListParams struct {
 	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 }
 
+type JobDeleteParams struct {
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
+}
+
 type JobDefineParams struct {
 	Name       param.Field[string]                 `json:"name,required"`
 	Schedule   param.Field[string]                 `json:"schedule,required"`
+	Blocking   param.Field[bool]                   `json:"blocking"`
 	MaxRetries param.Field[int64]                  `json:"max_retries"`
 	Metadata   param.Field[map[string]interface{}] `json:"metadata"`
 	Timeout    param.Field[string]                 `json:"timeout"`
@@ -220,40 +225,13 @@ func (r JobDefineParams) MarshalJSON() (data []byte, err error) {
 }
 
 type JobPauseParams struct {
-	// Job ID
-	JobID param.Field[int64] `query:"jobId,required"`
-}
-
-// URLQuery serializes [JobPauseParams]'s query parameters as `url.Values`.
-func (r JobPauseParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 }
 
 type JobResumeParams struct {
-	// Job ID
-	JobID param.Field[int64] `query:"jobId,required"`
-}
-
-// URLQuery serializes [JobResumeParams]'s query parameters as `url.Values`.
-func (r JobResumeParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 }
 
 type JobTriggerParams struct {
-	// Job ID
-	JobID param.Field[int64] `query:"jobId,required"`
-}
-
-// URLQuery serializes [JobTriggerParams]'s query parameters as `url.Values`.
-func (r JobTriggerParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatComma,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 }

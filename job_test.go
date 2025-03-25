@@ -80,7 +80,13 @@ func TestJobDelete(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Jobs.Delete(context.TODO(), int64(0))
+	_, err := client.Jobs.Delete(
+		context.TODO(),
+		int64(0),
+		schedo.JobDeleteParams{
+			XAPIEnvironment: schedo.F(int64(0)),
+		},
+	)
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {
@@ -106,6 +112,7 @@ func TestJobDefineWithOptionalParams(t *testing.T) {
 	_, err := client.Jobs.Define(context.TODO(), schedo.JobDefineParams{
 		Name:       schedo.F("Name of your job"),
 		Schedule:   schedo.F("0 0 * * *"),
+		Blocking:   schedo.F(true),
 		MaxRetries: schedo.F(int64(0)),
 		Metadata: schedo.F(map[string]interface{}{
 			"foo": "bar",
@@ -136,9 +143,9 @@ func TestJobPause(t *testing.T) {
 	)
 	_, err := client.Jobs.Pause(
 		context.TODO(),
-		"jobId",
+		int64(0),
 		schedo.JobPauseParams{
-			JobID: schedo.F(int64(0)),
+			XAPIEnvironment: schedo.F(int64(0)),
 		},
 	)
 	if err != nil {
@@ -165,9 +172,9 @@ func TestJobResume(t *testing.T) {
 	)
 	_, err := client.Jobs.Resume(
 		context.TODO(),
-		"jobId",
+		int64(0),
 		schedo.JobResumeParams{
-			JobID: schedo.F(int64(0)),
+			XAPIEnvironment: schedo.F(int64(0)),
 		},
 	)
 	if err != nil {
@@ -194,9 +201,9 @@ func TestJobTrigger(t *testing.T) {
 	)
 	_, err := client.Jobs.Trigger(
 		context.TODO(),
-		"jobId",
+		int64(0),
 		schedo.JobTriggerParams{
-			JobID: schedo.F(int64(0)),
+			XAPIEnvironment: schedo.F(int64(0)),
 		},
 	)
 	if err != nil {

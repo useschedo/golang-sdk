@@ -80,7 +80,7 @@ type JobExecution struct {
 	PickUpTime string `json:"pick_up_time"`
 	// Time when execution started
 	StartTime string `json:"start_time"`
-	// Execution status (running, completed, failed)
+	// Execution status (running, completed, failed, skipped, expired)
 	Status string           `json:"status"`
 	JSON   jobExecutionJSON `json:"-"`
 }

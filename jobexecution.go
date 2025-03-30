@@ -181,6 +181,7 @@ type JobExecutionCompleteParams struct {
 	CompleteServerTimeUtc param.Field[string] `json:"complete_server_time_utc"`
 	Error                 param.Field[string] `json:"error"`
 	Output                param.Field[string] `json:"output"`
+	StartServerTimeUtc    param.Field[string] `json:"start_server_time_utc"`
 }
 
 func (r JobExecutionCompleteParams) MarshalJSON() (data []byte, err error) {

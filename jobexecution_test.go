@@ -65,6 +65,7 @@ func TestJobExecutionCompleteWithOptionalParams(t *testing.T) {
 			CompleteServerTimeUtc: schedo.F("2023-01-01T00:00:00Z"),
 			Error:                 schedo.F("Error message"),
 			Output:                schedo.F("Output message"),
+			StartServerTimeUtc:    schedo.F("2023-01-01T00:00:00Z"),
 		},
 	)
 	if err != nil {

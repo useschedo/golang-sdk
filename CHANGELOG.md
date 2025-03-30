@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.0-alpha.4 (2025-03-30)
+
+Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
+
+### Features
+
+* **api:** api update ([8d2015c](https://github.com/useschedo/golang-sdk/commit/8d2015cdd67d443acb9dd41d1e567675c74d8aec))
+* **api:** api update ([113e1ac](https://github.com/useschedo/golang-sdk/commit/113e1ac6f6341001cc9ac40a5bd9b5b0c171f93e))
+
+
+### Chores
+
+* go live ([#10](https://github.com/useschedo/golang-sdk/issues/10)) ([f3d4533](https://github.com/useschedo/golang-sdk/commit/f3d4533a9126ad4a0694920d45d86ba40802de90))
+
 ## 0.1.0-alpha.3 (2025-03-30)
 
 Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)

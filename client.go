@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/stainless-sdks/Schedo-go/internal/requestconfig"
-	"github.com/stainless-sdks/Schedo-go/option"
+	"github.com/useschedo/golang-sdk/internal/requestconfig"
+	"github.com/useschedo/golang-sdk/option"
 )
 
 // Client creates a struct with services and top level methods that help with

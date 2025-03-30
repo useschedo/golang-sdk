@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/stainless-sdks/Schedo-go/internal/apijson"
-	"github.com/stainless-sdks/Schedo-go/internal/param"
-	"github.com/stainless-sdks/Schedo-go/internal/requestconfig"
-	"github.com/stainless-sdks/Schedo-go/option"
+	"github.com/useschedo/golang-sdk/internal/apijson"
+	"github.com/useschedo/golang-sdk/internal/param"
+	"github.com/useschedo/golang-sdk/internal/requestconfig"
+	"github.com/useschedo/golang-sdk/option"
 )
 
 // EnvironmentService contains methods and other services that help with

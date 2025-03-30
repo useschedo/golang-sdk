@@ -61,9 +61,10 @@ func TestJobExecutionCompleteWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		int64(0),
 		schedo.JobExecutionCompleteParams{
-			Success: schedo.F(true),
-			Error:   schedo.F("Error message"),
-			Output:  schedo.F("Output message"),
+			Success:               schedo.F(true),
+			CompleteServerTimeUtc: schedo.F("2023-01-01T00:00:00Z"),
+			Error:                 schedo.F("Error message"),
+			Output:                schedo.F("Output message"),
 		},
 	)
 	if err != nil {

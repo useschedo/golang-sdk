@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.1.0-alpha.2 (2025-03-30)
+
+Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
+
+### Features
+
+* **api:** api update ([bc5fd19](https://github.com/useschedo/golang-sdk/commit/bc5fd19b2040e39743542bf15175f166a296cdf8))
+* **api:** api update ([c28732e](https://github.com/useschedo/golang-sdk/commit/c28732ed137e35ad2d43b55ddd58f6a89baee109))
+* **api:** api update ([1e2c4f3](https://github.com/useschedo/golang-sdk/commit/1e2c4f3ef80e87449a9cd85d86eef3398fb1c111))
+* **api:** api update ([9674477](https://github.com/useschedo/golang-sdk/commit/9674477bbfbbec83f042c752d9383d6b8bfae3e1))
+* **api:** api update ([e43a508](https://github.com/useschedo/golang-sdk/commit/e43a5083e6cbcc56425480e4b6c37dadda0c72d3))
+* **api:** api update ([6261e0f](https://github.com/useschedo/golang-sdk/commit/6261e0fed8a007b73b02e1f1ac7107b7d946c2fe))
+* **api:** api update ([ffe3fd2](https://github.com/useschedo/golang-sdk/commit/ffe3fd24d73ff2565395f1acffa9b78c89c6c0ce))
+* **api:** manual updates ([a9069bc](https://github.com/useschedo/golang-sdk/commit/a9069bc8553d5365321b582952eeeeb59c998c71))
+
+
+### Bug Fixes
+
+* **test:** return early after test failure ([20e8855](https://github.com/useschedo/golang-sdk/commit/20e88557b281ac50ea55392295df564840086290))
+
+
+### Chores
+
+* add request options to client tests ([6c71e58](https://github.com/useschedo/golang-sdk/commit/6c71e5804ef81c2f56c7aab71833e79ceb1ddacc))
+* **docs:** improve security documentation ([6c39f08](https://github.com/useschedo/golang-sdk/commit/6c39f0841b72390c264322050fbef5af38c5ed4e))
+* fix typos ([99ea46b](https://github.com/useschedo/golang-sdk/commit/99ea46bfaeccfe62db0d39abd74a892881d75f8e))
+* go live ([#4](https://github.com/useschedo/golang-sdk/issues/4)) ([fc3c46d](https://github.com/useschedo/golang-sdk/commit/fc3c46dfdf5ab64f45911c99f86f890c37ebdbae))
+
 ## 0.1.0-alpha.1 (2025-03-19)
 
 Full Changelog: [v0.0.1-alpha.0...v0.1.0-alpha.1](https://github.com/useschedo/golang-sdk/compare/v0.0.1-alpha.0...v0.1.0-alpha.1)

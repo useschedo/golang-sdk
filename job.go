@@ -141,6 +141,8 @@ type Job struct {
 	Status string `json:"status"`
 	// Maximum execution time before job is terminated
 	Timeout string `json:"timeout"`
+	// Maximum execution time before job is terminated
+	TimeoutSeconds int64 `json:"timeout_seconds"`
 	// Time when the job was last updated
 	UpdatedAt string  `json:"updated_at"`
 	JSON      jobJSON `json:"-"`
@@ -164,6 +166,7 @@ type jobJSON struct {
 	RetryCount     apijson.Field
 	Status         apijson.Field
 	Timeout        apijson.Field
+	TimeoutSeconds apijson.Field
 	UpdatedAt      apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
@@ -212,12 +215,11 @@ type JobDeleteParams struct {
 }
 
 type JobDefineParams struct {
-	Name       param.Field[string]                 `json:"name,required"`
-	Schedule   param.Field[string]                 `json:"schedule,required"`
-	Blocking   param.Field[bool]                   `json:"blocking"`
-	MaxRetries param.Field[int64]                  `json:"max_retries"`
-	Metadata   param.Field[map[string]interface{}] `json:"metadata"`
-	Timeout    param.Field[string]                 `json:"timeout"`
+	Name           param.Field[string]                 `json:"name,required"`
+	Schedule       param.Field[string]                 `json:"schedule,required"`
+	Blocking       param.Field[bool]                   `json:"blocking"`
+	Metadata       param.Field[map[string]interface{}] `json:"metadata"`
+	TimeoutSeconds param.Field[int64]                  `json:"timeout_seconds"`
 }
 
 func (r JobDefineParams) MarshalJSON() (data []byte, err error) {

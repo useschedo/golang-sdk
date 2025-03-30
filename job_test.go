@@ -110,14 +110,13 @@ func TestJobDefineWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Jobs.Define(context.TODO(), schedo.JobDefineParams{
-		Name:       schedo.F("Name of your job"),
-		Schedule:   schedo.F("0 0 * * *"),
-		Blocking:   schedo.F(true),
-		MaxRetries: schedo.F(int64(0)),
+		Name:     schedo.F("Name of your job"),
+		Schedule: schedo.F("0 0 * * *"),
+		Blocking: schedo.F(true),
 		Metadata: schedo.F(map[string]interface{}{
 			"foo": "bar",
 		}),
-		Timeout: schedo.F("timeout"),
+		TimeoutSeconds: schedo.F(int64(0)),
 	})
 	if err != nil {
 		var apierr *schedo.Error

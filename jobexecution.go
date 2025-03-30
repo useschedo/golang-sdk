@@ -35,7 +35,7 @@ func NewJobExecutionService(opts ...option.RequestOption) (r *JobExecutionServic
 }
 
 // Returns a list of executions for a job
-func (r *JobExecutionService) List(ctx context.Context, jobID int64, params JobExecutionListParams, opts ...option.RequestOption) (res *[]JobExecution, err error) {
+func (r *JobExecutionService) List(ctx context.Context, jobID int64, params JobExecutionListParams, opts ...option.RequestOption) (res *[]JobExecutionFrame, err error) {
 	if params.XAPIEnvironment.Present {
 		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", params.XAPIEnvironment)))
 	}
@@ -109,6 +109,57 @@ func (r jobExecutionJSON) RawJSON() string {
 	return r.raw
 }
 
+type JobExecutionFrame struct {
+	// ID of the ent.
+	ID int64 `json:"id"`
+	// Duration holds the value of the "duration" field.
+	Duration int64 `json:"duration"`
+	// Time when execution completed
+	EndTime string `json:"end_time"`
+	// Error message if execution failed
+	Error string `json:"error"`
+	// Exit code of the executed command
+	ExitCode int64 `json:"exit_code"`
+	// JobCode holds the value of the "job_code" field.
+	JobCode  string                 `json:"job_code"`
+	Metadata map[string]interface{} `json:"metadata"`
+	// Output of the executed command
+	Output string `json:"output"`
+	// Time when execution was picked up by a worker
+	PickUpTime string `json:"pick_up_time"`
+	// Time when execution started
+	StartTime string `json:"start_time"`
+	// Execution status (running, completed, failed, skipped, expired)
+	Status string                `json:"status"`
+	JSON   jobExecutionFrameJSON `json:"-"`
+}
+
+// jobExecutionFrameJSON contains the JSON metadata for the struct
+// [JobExecutionFrame]
+type jobExecutionFrameJSON struct {
+	ID          apijson.Field
+	Duration    apijson.Field
+	EndTime     apijson.Field
+	Error       apijson.Field
+	ExitCode    apijson.Field
+	JobCode     apijson.Field
+	Metadata    apijson.Field
+	Output      apijson.Field
+	PickUpTime  apijson.Field
+	StartTime   apijson.Field
+	Status      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *JobExecutionFrame) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r jobExecutionFrameJSON) RawJSON() string {
+	return r.raw
+}
+
 type JobExecutionListParams struct {
 	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 	// 1
@@ -126,9 +177,10 @@ func (r JobExecutionListParams) URLQuery() (v url.Values) {
 }
 
 type JobExecutionCompleteParams struct {
-	Success param.Field[bool]   `json:"success,required"`
-	Error   param.Field[string] `json:"error"`
-	Output  param.Field[string] `json:"output"`
+	Success               param.Field[bool]   `json:"success,required"`
+	CompleteServerTimeUtc param.Field[string] `json:"complete_server_time_utc"`
+	Error                 param.Field[string] `json:"error"`
+	Output                param.Field[string] `json:"output"`
 }
 
 func (r JobExecutionCompleteParams) MarshalJSON() (data []byte, err error) {

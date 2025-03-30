@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/useschedo/golang-sdk"
-	"github.com/useschedo/golang-sdk/internal"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/Schedo-go"
+	"github.com/stainless-sdks/Schedo-go/internal"
+	"github.com/stainless-sdks/Schedo-go/option"
 )
 
 type closureTransport struct {

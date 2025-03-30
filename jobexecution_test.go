@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/Schedo-go"
-	"github.com/stainless-sdks/Schedo-go/internal/testutil"
-	"github.com/stainless-sdks/Schedo-go/option"
+	"github.com/useschedo/golang-sdk"
+	"github.com/useschedo/golang-sdk/internal/testutil"
+	"github.com/useschedo/golang-sdk/option"
 )
 
 func TestJobExecutionListWithOptionalParams(t *testing.T) {

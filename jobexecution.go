@@ -178,10 +178,10 @@ func (r JobExecutionListParams) URLQuery() (v url.Values) {
 
 type JobExecutionCompleteParams struct {
 	Success               param.Field[bool]   `json:"success,required"`
-	CompleteServerTimeUtc param.Field[string] `json:"complete_server_time_utc"`
+	CompleteServerTimeUtc param.Field[int64]  `json:"complete_server_time_utc"`
 	Error                 param.Field[string] `json:"error"`
 	Output                param.Field[string] `json:"output"`
-	StartServerTimeUtc    param.Field[string] `json:"start_server_time_utc"`
+	StartServerTimeUtc    param.Field[int64]  `json:"start_server_time_utc"`
 }
 
 func (r JobExecutionCompleteParams) MarshalJSON() (data []byte, err error) {

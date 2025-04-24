@@ -65,3 +65,11 @@ Response Types:
 Methods:
 
 - <code title="get /org">client.Org.<a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go#OrgService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>) (<a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go#Org">Org</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+
+# OrgEmails
+
+Methods:
+
+- <code title="post /org/emails">client.OrgEmails.<a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go#OrgEmailService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go#OrgEmailNewParams">OrgEmailNewParams</a>) ([]<a href="https://pkg.go.dev/builtin#string">string</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /org/emails">client.OrgEmails.<a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go#OrgEmailService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>) ([]<a href="https://pkg.go.dev/builtin#string">string</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="delete /org/emails">client.OrgEmails.<a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go#OrgEmailService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go">schedo</a>.<a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go#OrgEmailDeleteParams">OrgEmailDeleteParams</a>) ([]<a href="https://pkg.go.dev/builtin#string">string</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>

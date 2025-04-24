@@ -21,6 +21,7 @@ type Client struct {
 	Jobs         *JobService
 	JobExecution *JobExecutionService
 	Org          *OrgService
+	OrgEmails    *OrgEmailService
 }
 
 // DefaultClientOptions read from the environment (SCHEDO_API_KEY,
@@ -50,6 +51,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Jobs = NewJobService(opts...)
 	r.JobExecution = NewJobExecutionService(opts...)
 	r.Org = NewOrgService(opts...)
+	r.OrgEmails = NewOrgEmailService(opts...)
 
 	return
 }

@@ -13,7 +13,7 @@ import (
 	"github.com/useschedo/golang-sdk/option"
 )
 
-func TestApikeyNew(t *testing.T) {
+func TestOrgEmailNew(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,9 +26,8 @@ func TestApikeyNew(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Apikeys.New(context.TODO(), schedo.ApikeyNewParams{
-		EnvironmentID: schedo.F(int64(1)),
-		Name:          schedo.F("First ApiKey"),
+	_, err := client.OrgEmails.New(context.TODO(), schedo.OrgEmailNewParams{
+		Body: "body",
 	})
 	if err != nil {
 		var apierr *schedo.Error
@@ -39,7 +38,7 @@ func TestApikeyNew(t *testing.T) {
 	}
 }
 
-func TestApikeyList(t *testing.T) {
+func TestOrgEmailList(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -52,9 +51,7 @@ func TestApikeyList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Apikeys.List(context.TODO(), schedo.ApikeyListParams{
-		XAPIEnvironment: schedo.F(int64(0)),
-	})
+	_, err := client.OrgEmails.List(context.TODO())
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {
@@ -64,7 +61,7 @@ func TestApikeyList(t *testing.T) {
 	}
 }
 
-func TestApikeyRevoke(t *testing.T) {
+func TestOrgEmailDelete(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -77,7 +74,9 @@ func TestApikeyRevoke(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Apikeys.Revoke(context.TODO(), int64(0))
+	_, err := client.OrgEmails.Delete(context.TODO(), schedo.OrgEmailDeleteParams{
+		Body: "body",
+	})
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {

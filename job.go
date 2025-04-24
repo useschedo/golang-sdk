@@ -75,6 +75,17 @@ func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...o
 	return
 }
 
+// Update a job's muted status
+func (r *JobService) Mute(ctx context.Context, jobID int64, params JobMuteParams, opts ...option.RequestOption) (res *Job, err error) {
+	if params.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", params.XAPIEnvironment)))
+	}
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("jobs/mute/%v", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
+	return
+}
+
 // Temporary stops a job from running
 func (r *JobService) Pause(ctx context.Context, jobID int64, body JobPauseParams, opts ...option.RequestOption) (res *JobExecution, err error) {
 	if body.XAPIEnvironment.Present {
@@ -129,6 +140,8 @@ type Job struct {
 	MaxRetries int64 `json:"max_retries"`
 	// Additional metadata for the job
 	Metadata map[string]interface{} `json:"metadata"`
+	// Whether notifications for this job are muted
+	Muted bool `json:"muted"`
 	// Name of the job
 	Name string `json:"name"`
 	// Scheduled time for next execution
@@ -160,6 +173,7 @@ type jobJSON struct {
 	LastRunAt      apijson.Field
 	MaxRetries     apijson.Field
 	Metadata       apijson.Field
+	Muted          apijson.Field
 	Name           apijson.Field
 	NextRunAt      apijson.Field
 	Paused         apijson.Field
@@ -223,6 +237,15 @@ type JobDefineParams struct {
 }
 
 func (r JobDefineParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type JobMuteParams struct {
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
+	Muted           param.Field[bool]  `json:"muted"`
+}
+
+func (r JobMuteParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

@@ -41,7 +41,10 @@ func (r *ApikeyService) New(ctx context.Context, body ApikeyNewParams, opts ...o
 }
 
 // Returns a list of API Keys for the organization
-func (r *ApikeyService) List(ctx context.Context, opts ...option.RequestOption) (res *[][]APIKey, err error) {
+func (r *ApikeyService) List(ctx context.Context, query ApikeyListParams, opts ...option.RequestOption) (res *[][]APIKey, err error) {
+	if query.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", query.XAPIEnvironment)))
+	}
 	opts = append(r.Options[:], opts...)
 	path := "apikeys"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
@@ -111,4 +114,8 @@ type ApikeyNewParams struct {
 
 func (r ApikeyNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type ApikeyListParams struct {
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 }

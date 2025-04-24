@@ -1,6 +1,6 @@
 # Schedo Go API Library
 
-<a href="https://pkg.go.dev/github.com/useschedo/golang-sdk"><img src="https://pkg.go.dev/badge/github.com/useschedo/golang-sdk.svg" alt="Go Reference"></a>
+<a href="https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go"><img src="https://pkg.go.dev/badge/github.com/stainless-sdks/schedosdk-go.svg" alt="Go Reference"></a>
 
 The Schedo Go library provides convenient access to the [Schedo REST API](https://docs.schedo.dev)
 from applications written in Go.
@@ -9,25 +9,17 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 ## Installation
 
-<!-- x-release-please-start-version -->
-
 ```go
 import (
-	"github.com/useschedo/golang-sdk" // imported as schedo
+	"github.com/stainless-sdks/schedosdk-go" // imported as schedo
 )
 ```
 
-<!-- x-release-please-end -->
-
 Or to pin the version:
 
-<!-- x-release-please-start-version -->
-
 ```sh
-go get -u 'github.com/useschedo/golang-sdk@v0.1.0-alpha.1'
+go get -u 'github.com/stainless-sdks/schedosdk-go@v0.1.0-alpha.1'
 ```
-
-<!-- x-release-please-end -->
 
 ## Requirements
 
@@ -44,8 +36,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/useschedo/golang-sdk"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/schedosdk-go"
+	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
 func main() {
@@ -156,7 +148,7 @@ client.Apikeys.New(context.TODO(), ...,
 )
 ```
 
-See the [full list of request options](https://pkg.go.dev/github.com/useschedo/golang-sdk/option).
+See the [full list of request options](https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go/option).
 
 ### Pagination
 
@@ -374,7 +366,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
-We are keen for your feedback; please open an [issue](https://www.github.com/useschedo/golang-sdk/issues) with questions, bugs, or suggestions.
+We are keen for your feedback; please open an [issue](https://www.github.com/stainless-sdks/schedosdk-go/issues) with questions, bugs, or suggestions.
 
 ## Contributing
 

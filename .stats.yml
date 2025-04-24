@@ -1,4 +1,4 @@
 configured_endpoints: 21
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/databrew--inc-dash%2Fschedosdk-c93a5d8e71091e204c456a8945daedb1f7d33fa0c87955e34e3d9b54b7a0591e.yml
-openapi_spec_hash: cbcb50b1a207fb9ebf3e1e8f6a6e30c9
-config_hash: a1f0d4bb126dfb21f79791f491916777
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/databrew--inc-dash%2Fschedosdk-bbf581d87570b49cc2d037ef7bab12124ff97e6a498a3f20568f1a74a63d119c.yml
+openapi_spec_hash: 11a1d0d162a14825b754ed1f4b621002
+config_hash: 0f4acc84cba8cf003a04d7e03c9e83f3

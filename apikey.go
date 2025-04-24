@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/useschedo/golang-sdk/internal/apijson"
-	"github.com/useschedo/golang-sdk/internal/param"
-	"github.com/useschedo/golang-sdk/internal/requestconfig"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/schedosdk-go/internal/apijson"
+	"github.com/stainless-sdks/schedosdk-go/internal/param"
+	"github.com/stainless-sdks/schedosdk-go/internal/requestconfig"
+	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
 // ApikeyService contains methods and other services that help with interacting
@@ -41,7 +41,10 @@ func (r *ApikeyService) New(ctx context.Context, body ApikeyNewParams, opts ...o
 }
 
 // Returns a list of API Keys for the organization
-func (r *ApikeyService) List(ctx context.Context, opts ...option.RequestOption) (res *[][]APIKey, err error) {
+func (r *ApikeyService) List(ctx context.Context, query ApikeyListParams, opts ...option.RequestOption) (res *[][]APIKey, err error) {
+	if query.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", query.XAPIEnvironment)))
+	}
 	opts = append(r.Options[:], opts...)
 	path := "apikeys"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
@@ -111,4 +114,8 @@ type ApikeyNewParams struct {
 
 func (r ApikeyNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type ApikeyListParams struct {
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 }

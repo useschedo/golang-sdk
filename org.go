@@ -6,9 +6,9 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/useschedo/golang-sdk/internal/apijson"
-	"github.com/useschedo/golang-sdk/internal/requestconfig"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/schedosdk-go/internal/apijson"
+	"github.com/stainless-sdks/schedosdk-go/internal/requestconfig"
+	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
 // OrgService contains methods and other services that help with interacting with
@@ -46,6 +46,8 @@ type Org struct {
 	// Edges holds the relations/edges for other nodes in the graph. The values are
 	// being populated by the OrgQuery when eager-loading is set.
 	Edges OrgEdges `json:"edges"`
+	// List of organization emails
+	Emails []string `json:"emails"`
 	// Organization name
 	Name string `json:"name"`
 	// SingleUserOrg holds the value of the "single_user_org" field.
@@ -58,6 +60,7 @@ type orgJSON struct {
 	ID            apijson.Field
 	ClerkID       apijson.Field
 	Edges         apijson.Field
+	Emails        apijson.Field
 	Name          apijson.Field
 	SingleUserOrg apijson.Field
 	raw           string

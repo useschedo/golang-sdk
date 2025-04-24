@@ -8,11 +8,11 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/useschedo/golang-sdk/internal/apijson"
-	"github.com/useschedo/golang-sdk/internal/apiquery"
-	"github.com/useschedo/golang-sdk/internal/param"
-	"github.com/useschedo/golang-sdk/internal/requestconfig"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/schedosdk-go/internal/apijson"
+	"github.com/stainless-sdks/schedosdk-go/internal/apiquery"
+	"github.com/stainless-sdks/schedosdk-go/internal/param"
+	"github.com/stainless-sdks/schedosdk-go/internal/requestconfig"
+	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
 // JobExecutionService contains methods and other services that help with

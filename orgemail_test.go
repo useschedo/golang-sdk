@@ -13,7 +13,7 @@ import (
 	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
-func TestJobExecutionListWithOptionalParams(t *testing.T) {
+func TestOrgEmailNew(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -26,15 +26,9 @@ func TestJobExecutionListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.JobExecution.List(
-		context.TODO(),
-		int64(0),
-		schedo.JobExecutionListParams{
-			XAPIEnvironment: schedo.F(int64(0)),
-			Cursor:          schedo.F(int64(0)),
-			Limit:           schedo.F(int64(0)),
-		},
-	)
+	_, err := client.OrgEmails.New(context.TODO(), schedo.OrgEmailNewParams{
+		Body: "body",
+	})
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {
@@ -44,7 +38,7 @@ func TestJobExecutionListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestJobExecutionCompleteWithOptionalParams(t *testing.T) {
+func TestOrgEmailList(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -57,17 +51,7 @@ func TestJobExecutionCompleteWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.JobExecution.Complete(
-		context.TODO(),
-		int64(0),
-		schedo.JobExecutionCompleteParams{
-			Success:               schedo.F(true),
-			CompleteServerTimeUtc: schedo.F(int64(0)),
-			Error:                 schedo.F("Error message"),
-			Output:                schedo.F("Output message"),
-			StartServerTimeUtc:    schedo.F(int64(0)),
-		},
-	)
+	_, err := client.OrgEmails.List(context.TODO())
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {
@@ -77,7 +61,7 @@ func TestJobExecutionCompleteWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestJobExecutionPoll(t *testing.T) {
+func TestOrgEmailDelete(t *testing.T) {
 	t.Skip("skipped: tests are disabled for the time being")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -90,7 +74,9 @@ func TestJobExecutionPoll(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.JobExecution.Poll(context.TODO())
+	_, err := client.OrgEmails.Delete(context.TODO(), schedo.OrgEmailDeleteParams{
+		Body: "body",
+	})
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {

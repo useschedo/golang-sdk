@@ -6,21 +6,20 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
 
+	"github.com/stainless-sdks/schedosdk-go/internal/requestconfig"
 	"github.com/tidwall/sjson"
-	"github.com/useschedo/golang-sdk/internal/requestconfig"
 )
 
 // RequestOption is an option for the requests made by the Schedo API Client
 // which can be supplied to clients, services, and methods. You can read more about this functional
 // options pattern in our [README].
 //
-// [README]: https://pkg.go.dev/github.com/useschedo/golang-sdk#readme-requestoptions
+// [README]: https://pkg.go.dev/github.com/stainless-sdks/schedosdk-go#readme-requestoptions
 type RequestOption = requestconfig.RequestOption
 
 // WithBaseURL returns a RequestOption that sets the BaseURL for the client.
@@ -28,10 +27,11 @@ type RequestOption = requestconfig.RequestOption
 // For security reasons, ensure that the base URL is trusted.
 func WithBaseURL(base string) RequestOption {
 	u, err := url.Parse(base)
-	if err != nil {
-		log.Fatalf("failed to parse BaseURL: %s\n", err)
-	}
 	return requestconfig.RequestOptionFunc(func(r *requestconfig.RequestConfig) error {
+		if err != nil {
+			return fmt.Errorf("requestoption: WithBaseURL failed to parse url %s\n", err)
+		}
+
 		if u.Path != "" && !strings.HasSuffix(u.Path, "/") {
 			u.Path += "/"
 		}
@@ -40,11 +40,34 @@ func WithBaseURL(base string) RequestOption {
 	})
 }
 
-// WithHTTPClient returns a RequestOption that changes the underlying [http.Client] used to make this
+// HTTPClient is primarily used to describe an [*http.Client], but also
+// supports custom implementations.
+//
+// For bespoke implementations, prefer using an [*http.Client] with a
+// custom transport. See [http.RoundTripper] for further information.
+type HTTPClient interface {
+	Do(*http.Request) (*http.Response, error)
+}
+
+// WithHTTPClient returns a RequestOption that changes the underlying http client used to make this
 // request, which by default is [http.DefaultClient].
-func WithHTTPClient(client *http.Client) RequestOption {
+//
+// For custom uses cases, it is recommended to provide an [*http.Client] with a custom
+// [http.RoundTripper] as its transport, rather than directly implementing [HTTPClient].
+func WithHTTPClient(client HTTPClient) RequestOption {
 	return requestconfig.RequestOptionFunc(func(r *requestconfig.RequestConfig) error {
-		r.HTTPClient = client
+		if client == nil {
+			return fmt.Errorf("requestoption: custom http client cannot be nil")
+		}
+
+		if c, ok := client.(*http.Client); ok {
+			// Prefer the native client if possible.
+			r.HTTPClient = c
+			r.CustomHTTPDoer = nil
+		} else {
+			r.CustomHTTPDoer = client
+		}
+
 		return nil
 	})
 }

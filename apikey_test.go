@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/useschedo/golang-sdk"
-	"github.com/useschedo/golang-sdk/internal/testutil"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/schedosdk-go"
+	"github.com/stainless-sdks/schedosdk-go/internal/testutil"
+	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
 func TestApikeyNew(t *testing.T) {
@@ -52,7 +52,9 @@ func TestApikeyList(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
 	)
-	_, err := client.Apikeys.List(context.TODO())
+	_, err := client.Apikeys.List(context.TODO(), schedo.ApikeyListParams{
+		XAPIEnvironment: schedo.F(int64(0)),
+	})
 	if err != nil {
 		var apierr *schedo.Error
 		if errors.As(err, &apierr) {

@@ -41,7 +41,7 @@ To use a local version of this library from source in another project, edit the 
 directive. This can be done through the CLI with the following:
 
 ```sh
-$ go mod edit -replace github.com/stainless-sdks/schedosdk-go=/path/to/schedosdk-go
+$ go mod edit -replace github.com/useschedo/golang-sdk=/path/to/golang-sdk
 ```
 
 ## Running tests

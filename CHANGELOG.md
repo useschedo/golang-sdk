@@ -4,20 +4,9 @@
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
 
-### Features
-
-* **api:** api update ([70b3f0a](https://github.com/useschedo/golang-sdk/commit/70b3f0a15897a316ca7e6454ead3e3fb0268a270))
-* **api:** manual updates ([a2a00e7](https://github.com/useschedo/golang-sdk/commit/a2a00e733bdeacdde7c8cf481b6cc3a7b3c30282))
-
-
-### Bug Fixes
-
-* handle empty bodies in WithJSONSet ([2d534a2](https://github.com/useschedo/golang-sdk/commit/2d534a2a9e509f81c0ee3ff60655389480856fcf))
-
-
 ### Chores
 
-* update SDK settings ([b06dc75](https://github.com/useschedo/golang-sdk/commit/b06dc750d02085ebeed4da3684fb0337deb87e87))
+* sync repo ([622f891](https://github.com/useschedo/golang-sdk/commit/622f8917b2ee762b1549934c766a6aab47b35fc4))
 
 ## 0.1.0-alpha.1 (2025-04-24)
 

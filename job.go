@@ -67,11 +67,31 @@ func (r *JobService) Delete(ctx context.Context, jobID int64, body JobDeletePara
 	return
 }
 
+// Retrieves a number of active connections for a job
+func (r *JobService) ConnectionsCount(ctx context.Context, jobID int64, opts ...option.RequestOption) (err error) {
+	opts = append(r.Options[:], opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	path := fmt.Sprintf("jobs/%v/connections/count", jobID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, nil, opts...)
+	return
+}
+
 // Tries to create a new Job Definition
 func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...option.RequestOption) (res *Job, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "jobs/definition"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
+// List all jobs
+func (r *JobService) ListFull(ctx context.Context, query JobListFullParams, opts ...option.RequestOption) (res *[]JobInList, err error) {
+	if query.XAPIEnvironment.Present {
+		opts = append(opts, option.WithHeader("X-API-ENVIRONMENT", fmt.Sprintf("%s", query.XAPIEnvironment)))
+	}
+	opts = append(r.Options[:], opts...)
+	path := "jobs/list"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
@@ -194,18 +214,42 @@ func (r jobJSON) RawJSON() string {
 	return r.raw
 }
 
+type JobInList struct {
+	ConnectionsCount int64         `json:"connections_count"`
+	Job              Job           `json:"job"`
+	JSON             jobInListJSON `json:"-"`
+}
+
+// jobInListJSON contains the JSON metadata for the struct [JobInList]
+type jobInListJSON struct {
+	ConnectionsCount apijson.Field
+	Job              apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *JobInList) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r jobInListJSON) RawJSON() string {
+	return r.raw
+}
+
 type Output struct {
-	Job     Job          `json:"job"`
-	LastRun JobExecution `json:"last_run"`
-	JSON    outputJSON   `json:"-"`
+	ConnectionsCount int64        `json:"connections_count"`
+	Job              Job          `json:"job"`
+	LastRun          JobExecution `json:"last_run"`
+	JSON             outputJSON   `json:"-"`
 }
 
 // outputJSON contains the JSON metadata for the struct [Output]
 type outputJSON struct {
-	Job         apijson.Field
-	LastRun     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	ConnectionsCount apijson.Field
+	Job              apijson.Field
+	LastRun          apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
 }
 
 func (r *Output) UnmarshalJSON(data []byte) (err error) {
@@ -238,6 +282,10 @@ type JobDefineParams struct {
 
 func (r JobDefineParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type JobListFullParams struct {
+	XAPIEnvironment param.Field[int64] `header:"X-API-ENVIRONMENT,required"`
 }
 
 type JobMuteParams struct {

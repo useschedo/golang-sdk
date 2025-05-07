@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2025-05-07)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Bug Fixes
+
+* **client:** clean up reader resources ([bcc05ec](https://github.com/useschedo/golang-sdk/commit/bcc05ec8a8d51e8d9393cb75a1726be820ca035a))
+* **client:** correctly update body in WithJSONSet ([15e829f](https://github.com/useschedo/golang-sdk/commit/15e829f551dff08301ea1c20589701dc6c08376a))
+
 ## 0.1.0-alpha.2 (2025-04-30)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)

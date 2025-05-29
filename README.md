@@ -45,13 +45,10 @@ import (
 	"fmt"
 
 	"github.com/useschedo/golang-sdk"
-	"github.com/useschedo/golang-sdk/option"
 )
 
 func main() {
-	client := schedo.NewClient(
-		option.WithAPIKey("My API Key"), // defaults to os.LookupEnv("SCHEDO_API_KEY")
-	)
+	client := schedo.NewClient()
 	apiKey, err := client.Apikeys.New(context.TODO(), schedo.ApikeyNewParams{
 		EnvironmentID: schedo.F(int64(1)),
 		Name:          schedo.F("First ApiKey"),

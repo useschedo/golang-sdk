@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2025-05-29)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Features
+
+* **client:** add support for endpoint-specific base URLs in python ([c9e7d33](https://github.com/useschedo/golang-sdk/commit/c9e7d335d127ad19eeeb2816f1cf6a7ba202b846))
+
+
+### Bug Fixes
+
+* **client:** clean up reader resources ([bcc05ec](https://github.com/useschedo/golang-sdk/commit/bcc05ec8a8d51e8d9393cb75a1726be820ca035a))
+* **client:** correctly update body in WithJSONSet ([15e829f](https://github.com/useschedo/golang-sdk/commit/15e829f551dff08301ea1c20589701dc6c08376a))
+
+
+### Chores
+
+* **docs:** grammar improvements ([a08e76d](https://github.com/useschedo/golang-sdk/commit/a08e76d2f46033f540bb8efbb9f1983373815ffc))
+* improve devcontainer setup ([47c37d2](https://github.com/useschedo/golang-sdk/commit/47c37d2cee0808e91edee1e1feb77f14236a7707))
+* **internal:** codegen related update ([4bc4b6b](https://github.com/useschedo/golang-sdk/commit/4bc4b6b36a41a86e77ee07da5bf8643f10d3fb7b))
+
 ## 0.1.0-alpha.2 (2025-04-30)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)

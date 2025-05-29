@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/stainless-sdks/schedosdk-go/internal/param"
+	"github.com/useschedo/golang-sdk/internal/param"
 )
 
 var encoders sync.Map // map[reflect.Type]encoderFunc

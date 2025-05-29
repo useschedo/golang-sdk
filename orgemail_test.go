@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stainless-sdks/schedosdk-go"
-	"github.com/stainless-sdks/schedosdk-go/internal/testutil"
-	"github.com/stainless-sdks/schedosdk-go/option"
+	"github.com/useschedo/golang-sdk"
+	"github.com/useschedo/golang-sdk/internal/testutil"
+	"github.com/useschedo/golang-sdk/option"
 )
 
 func TestOrgEmailNew(t *testing.T) {

@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/useschedo/golang-sdk"
-	"github.com/useschedo/golang-sdk/internal/testutil"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/schedosdk-go"
+	"github.com/stainless-sdks/schedosdk-go/internal/testutil"
+	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
 func TestJobGet(t *testing.T) {
@@ -133,6 +133,38 @@ func TestJobDefineWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 	)
 	_, err := client.Jobs.Define(context.TODO(), schedo.JobDefineParams{
+		Name:     schedo.F("Name of your job"),
+		Schedule: schedo.F("0 0 * * *"),
+		Blocking: schedo.F(true),
+		Metadata: schedo.F(map[string]interface{}{
+			"foo": "bar",
+		}),
+		TimeoutSeconds: schedo.F(int64(0)),
+		WebhookURL:     schedo.F("https://example.com/webhook"),
+	})
+	if err != nil {
+		var apierr *schedo.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestJobDefineInternalWithOptionalParams(t *testing.T) {
+	t.Skip("skipped: tests are disabled for the time being")
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := schedo.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+	)
+	_, err := client.Jobs.DefineInternal(context.TODO(), schedo.JobDefineInternalParams{
 		Name:     schedo.F("Name of your job"),
 		Schedule: schedo.F("0 0 * * *"),
 		Blocking: schedo.F(true),

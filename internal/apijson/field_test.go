@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/useschedo/golang-sdk/internal/param"
+	"github.com/stainless-sdks/schedosdk-go/internal/param"
 )
 
 type Struct struct {

@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/useschedo/golang-sdk/internal/apijson"
-	"github.com/useschedo/golang-sdk/internal/param"
-	"github.com/useschedo/golang-sdk/internal/requestconfig"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/schedosdk-go/internal/apijson"
+	"github.com/stainless-sdks/schedosdk-go/internal/param"
+	"github.com/stainless-sdks/schedosdk-go/internal/requestconfig"
+	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
 // JobService contains methods and other services that help with interacting with
@@ -176,9 +176,13 @@ type Job struct {
 	Timeout string `json:"timeout"`
 	// Maximum execution time before job is terminated
 	TimeoutSeconds int64 `json:"timeout_seconds"`
+	// Type of job (push, sdk, etc.)
+	Type JobType `json:"type"`
 	// Time when the job was last updated
-	UpdatedAt string  `json:"updated_at"`
-	JSON      jobJSON `json:"-"`
+	UpdatedAt string `json:"updated_at"`
+	// A webhook url to triggen on job exection
+	WebhookURL string  `json:"webhook_url"`
+	JSON       jobJSON `json:"-"`
 }
 
 // jobJSON contains the JSON metadata for the struct [Job]
@@ -201,7 +205,9 @@ type jobJSON struct {
 	Status         apijson.Field
 	Timeout        apijson.Field
 	TimeoutSeconds apijson.Field
+	Type           apijson.Field
 	UpdatedAt      apijson.Field
+	WebhookURL     apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -212,6 +218,22 @@ func (r *Job) UnmarshalJSON(data []byte) (err error) {
 
 func (r jobJSON) RawJSON() string {
 	return r.raw
+}
+
+// Type of job (push, sdk, etc.)
+type JobType string
+
+const (
+	JobTypeSDK  JobType = "sdk"
+	JobTypePush JobType = "push"
+)
+
+func (r JobType) IsKnown() bool {
+	switch r {
+	case JobTypeSDK, JobTypePush:
+		return true
+	}
+	return false
 }
 
 type JobInList struct {
@@ -278,6 +300,7 @@ type JobDefineParams struct {
 	Blocking       param.Field[bool]                   `json:"blocking"`
 	Metadata       param.Field[map[string]interface{}] `json:"metadata"`
 	TimeoutSeconds param.Field[int64]                  `json:"timeout_seconds"`
+	WebhookURL     param.Field[string]                 `json:"webhook_url"`
 }
 
 func (r JobDefineParams) MarshalJSON() (data []byte, err error) {

@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/useschedo/golang-sdk/internal/apijson"
-	"github.com/useschedo/golang-sdk/internal/param"
-	"github.com/useschedo/golang-sdk/internal/requestconfig"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/schedosdk-go/internal/apijson"
+	"github.com/stainless-sdks/schedosdk-go/internal/param"
+	"github.com/stainless-sdks/schedosdk-go/internal/requestconfig"
+	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
 // JobService contains methods and other services that help with interacting with
@@ -80,6 +80,14 @@ func (r *JobService) ConnectionsCount(ctx context.Context, jobID int64, opts ...
 func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...option.RequestOption) (res *Job, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "jobs/definition"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
+// Tries to create a new Internal Job Definition
+func (r *JobService) DefineInternal(ctx context.Context, body JobDefineInternalParams, opts ...option.RequestOption) (res *Job, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "jobs/definition/internal"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
@@ -304,6 +312,19 @@ type JobDefineParams struct {
 }
 
 func (r JobDefineParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type JobDefineInternalParams struct {
+	Name           param.Field[string]                 `json:"name,required"`
+	Schedule       param.Field[string]                 `json:"schedule,required"`
+	Blocking       param.Field[bool]                   `json:"blocking"`
+	Metadata       param.Field[map[string]interface{}] `json:"metadata"`
+	TimeoutSeconds param.Field[int64]                  `json:"timeout_seconds"`
+	WebhookURL     param.Field[string]                 `json:"webhook_url"`
+}
+
+func (r JobDefineInternalParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

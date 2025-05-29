@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/useschedo/golang-sdk"
-	"github.com/useschedo/golang-sdk/internal/testutil"
-	"github.com/useschedo/golang-sdk/option"
+	"github.com/stainless-sdks/schedosdk-go"
+	"github.com/stainless-sdks/schedosdk-go/internal/testutil"
+	"github.com/stainless-sdks/schedosdk-go/option"
 )
 
 func TestJobGet(t *testing.T) {
@@ -140,6 +140,7 @@ func TestJobDefineWithOptionalParams(t *testing.T) {
 			"foo": "bar",
 		}),
 		TimeoutSeconds: schedo.F(int64(0)),
+		WebhookURL:     schedo.F("https://example.com/webhook"),
 	})
 	if err != nil {
 		var apierr *schedo.Error

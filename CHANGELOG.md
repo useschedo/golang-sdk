@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2025-05-31)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Features
+
+* **api:** api update ([5fcb676](https://github.com/useschedo/golang-sdk/commit/5fcb676fd27656ca7f46021d473477e0224e554b))
+* **api:** api update ([8e9b6dc](https://github.com/useschedo/golang-sdk/commit/8e9b6dcf4b6b2355bddeb3783c81cf83dfe64485))
+* **api:** api update ([87a7a80](https://github.com/useschedo/golang-sdk/commit/87a7a807d7fbc8707ab3ac7f0e2ad22b07a1179b))
+* **client:** add support for endpoint-specific base URLs in python ([c9e7d33](https://github.com/useschedo/golang-sdk/commit/c9e7d335d127ad19eeeb2816f1cf6a7ba202b846))
+
+
+### Bug Fixes
+
+* **client:** clean up reader resources ([bcc05ec](https://github.com/useschedo/golang-sdk/commit/bcc05ec8a8d51e8d9393cb75a1726be820ca035a))
+* **client:** correctly update body in WithJSONSet ([15e829f](https://github.com/useschedo/golang-sdk/commit/15e829f551dff08301ea1c20589701dc6c08376a))
+
+
+### Chores
+
+* **docs:** grammar improvements ([a08e76d](https://github.com/useschedo/golang-sdk/commit/a08e76d2f46033f540bb8efbb9f1983373815ffc))
+* improve devcontainer setup ([47c37d2](https://github.com/useschedo/golang-sdk/commit/47c37d2cee0808e91edee1e1feb77f14236a7707))
+* **internal:** codegen related update ([4bc4b6b](https://github.com/useschedo/golang-sdk/commit/4bc4b6b36a41a86e77ee07da5bf8643f10d3fb7b))
+* make go mod tidy continue on error ([4dc7f28](https://github.com/useschedo/golang-sdk/commit/4dc7f28fe8c7426de48f2624d64853ab68ed93a3))
+* update SDK settings ([e0bf8c5](https://github.com/useschedo/golang-sdk/commit/e0bf8c51e334c735182fcebe8b6a0dbff6e41de4))
+* update SDK settings ([fb93682](https://github.com/useschedo/golang-sdk/commit/fb93682ff1f6094e4859283df9b2e9a064c82ffa))
+
 ## 0.1.0-alpha.2 (2025-04-30)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/useschedo/golang-sdk/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)

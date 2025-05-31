@@ -67,19 +67,22 @@ type Environment struct {
 	// Name holds the value of the "name" field.
 	Name string `json:"name"`
 	// OrganizationID holds the value of the "organization_id" field.
-	OrganizationID int64           `json:"organization_id"`
-	JSON           environmentJSON `json:"-"`
+	OrganizationID int64 `json:"organization_id"`
+	// A webhook signature key to validate incoming requests
+	WebhookSignatureKey string          `json:"webhook_signature_key"`
+	JSON                environmentJSON `json:"-"`
 }
 
 // environmentJSON contains the JSON metadata for the struct [Environment]
 type environmentJSON struct {
-	ID             apijson.Field
-	CreatedAt      apijson.Field
-	Edges          apijson.Field
-	Name           apijson.Field
-	OrganizationID apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
+	ID                  apijson.Field
+	CreatedAt           apijson.Field
+	Edges               apijson.Field
+	Name                apijson.Field
+	OrganizationID      apijson.Field
+	WebhookSignatureKey apijson.Field
+	raw                 string
+	ExtraFields         map[string]apijson.Field
 }
 
 func (r *Environment) UnmarshalJSON(data []byte) (err error) {

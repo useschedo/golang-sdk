@@ -84,6 +84,14 @@ func (r *JobService) Define(ctx context.Context, body JobDefineParams, opts ...o
 	return
 }
 
+// Tries to create a new Internal Job Definition
+func (r *JobService) DefineInternal(ctx context.Context, body JobDefineInternalParams, opts ...option.RequestOption) (res *Job, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "jobs/definition/internal"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // List all jobs
 func (r *JobService) ListFull(ctx context.Context, query JobListFullParams, opts ...option.RequestOption) (res *[]JobInList, err error) {
 	if query.XAPIEnvironment.Present {
@@ -176,9 +184,13 @@ type Job struct {
 	Timeout string `json:"timeout"`
 	// Maximum execution time before job is terminated
 	TimeoutSeconds int64 `json:"timeout_seconds"`
+	// Type of job (push, sdk, etc.)
+	Type JobType `json:"type"`
 	// Time when the job was last updated
-	UpdatedAt string  `json:"updated_at"`
-	JSON      jobJSON `json:"-"`
+	UpdatedAt string `json:"updated_at"`
+	// A webhook url to triggen on job exection
+	WebhookURL string  `json:"webhook_url"`
+	JSON       jobJSON `json:"-"`
 }
 
 // jobJSON contains the JSON metadata for the struct [Job]
@@ -201,7 +213,9 @@ type jobJSON struct {
 	Status         apijson.Field
 	Timeout        apijson.Field
 	TimeoutSeconds apijson.Field
+	Type           apijson.Field
 	UpdatedAt      apijson.Field
+	WebhookURL     apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -212,6 +226,22 @@ func (r *Job) UnmarshalJSON(data []byte) (err error) {
 
 func (r jobJSON) RawJSON() string {
 	return r.raw
+}
+
+// Type of job (push, sdk, etc.)
+type JobType string
+
+const (
+	JobTypeSDK  JobType = "sdk"
+	JobTypePush JobType = "push"
+)
+
+func (r JobType) IsKnown() bool {
+	switch r {
+	case JobTypeSDK, JobTypePush:
+		return true
+	}
+	return false
 }
 
 type JobInList struct {
@@ -278,9 +308,23 @@ type JobDefineParams struct {
 	Blocking       param.Field[bool]                   `json:"blocking"`
 	Metadata       param.Field[map[string]interface{}] `json:"metadata"`
 	TimeoutSeconds param.Field[int64]                  `json:"timeout_seconds"`
+	WebhookURL     param.Field[string]                 `json:"webhook_url"`
 }
 
 func (r JobDefineParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type JobDefineInternalParams struct {
+	Name           param.Field[string]                 `json:"name,required"`
+	Schedule       param.Field[string]                 `json:"schedule,required"`
+	Blocking       param.Field[bool]                   `json:"blocking"`
+	Metadata       param.Field[map[string]interface{}] `json:"metadata"`
+	TimeoutSeconds param.Field[int64]                  `json:"timeout_seconds"`
+	WebhookURL     param.Field[string]                 `json:"webhook_url"`
+}
+
+func (r JobDefineInternalParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
